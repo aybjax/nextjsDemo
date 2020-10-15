@@ -110,7 +110,7 @@ export const UserLine = ({size, isRead, setIsRead, info}) => {
             </IconButton>
           </Box>
         </Grid>
-    </Paper>
+      </Paper>
     </Box>
   );
 }

@@ -1,4 +1,4 @@
-import { Container, ThemeProvider, useMediaQuery } from '@material-ui/core';
+import { Container, ThemeProvider, useMediaQuery, Zoom } from '@material-ui/core';
 import { Appbar } from '../components/appbar';
 import { Breadcrumb } from '../components/bread';
 import { Header } from '../components/title.js';
@@ -71,13 +71,14 @@ export default function Home() {
       {
         isRead ?
         <CustList size={size} info={info}/> :
-        <Form size={size} alertModal={alertModal}/>
+        <Form size={size} setAlertModal={setAlertModal}/>
       }
 
       {
         alertModal.state !== NONE &&
           <Confirm {...args}/>
       }
+      
       {
         alertModal.resp === YES &&
         <ReactLoading id='loading' type={'bubbles'} color={'#482880'} height={667} width={375} />

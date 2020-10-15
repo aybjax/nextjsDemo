@@ -79,6 +79,7 @@ export const axiosPost = (setInfo, setAlertModal) => {
             resp:NO,
             payload:{}
         })
+        localStorage.setItem('userInfo', JSON.stringify(resp))
     })
     //fnx above should not give any error
         //not checking for network errors
