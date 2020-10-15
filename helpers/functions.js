@@ -44,6 +44,10 @@ export const parseTel = (tel) => {
     return arr.join(' ')
 }
 
+/*
+*Axios related fnxs
+*/
+
 const axiosInstance = axios.create({
     baseURL: 'http://jsonplaceholder.typicode.com/posts',
     headers :{
@@ -54,6 +58,7 @@ const axiosInstance = axios.create({
 
 export const axiosPost = (setInfo, setAlertModal) => {
     let payload
+    //for loading animation
     setAlertModal( prev => {
         payload = {...prev.payload}
         return {
@@ -63,9 +68,11 @@ export const axiosPost = (setInfo, setAlertModal) => {
         }
     } )
 
+    //actual request
     axiosInstance.post('/', payload)
     .then(resp => resp.data)
     .then(resp => {
+        //remove modal + set data
         setInfo({...resp})
         setAlertModal({
             state: ALERT,
@@ -73,7 +80,7 @@ export const axiosPost = (setInfo, setAlertModal) => {
             payload:{}
         })
     })
-    .catch(err => {
-        alert(err)
-    })
+    //fnx above should not give any error
+        //not checking for network errors
+    .catch(err => {})
 }

@@ -1,18 +1,9 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  IconButton,
-  Divider,
-} from '@material-ui/core';
+import { AppBar, Toolbar, Typography, IconButton, Divider } from '@material-ui/core';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
-import {
-  SMALL,
-  MEDIUM,
-} from '../helpers/constants';
+import { SMALL, MEDIUM, IPHONE } from '../helpers/constants';
 import {nameInitials} from '../helpers/functions'
 
 
@@ -32,10 +23,13 @@ const useStyles = makeStyles((theme) => ({
 
 export const Appbar = ({size, info}) => {
   const classes = useStyles();
+    
+    /*
+    ** size adjustment
+    */
     let fontSize;
     let variant;
-
-    if( size === SMALL )
+    if( size === SMALL || size === IPHONE )
     {
       fontSize = 'small'
       variant = 'body2'
@@ -50,6 +44,10 @@ export const Appbar = ({size, info}) => {
       fontSize = 'large'
       variant = 'subtitle1'
     }
+    /*
+    **
+    */
+   
   return (
     <div className={classes.grow}>
       <AppBar position="static" color='transparent' style={{ background: 'transparent', boxShadow: 'none'}}>

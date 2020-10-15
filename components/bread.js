@@ -4,10 +4,7 @@ import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
 import { Box } from '@material-ui/core';
 
-import {
-  MEDIUM,
-  LARGE,
-} from '../helpers/constants'
+import { MEDIUM, LARGE } from '../helpers/constants'
 
 export const Breadcrumb = ({size}) =>
 {

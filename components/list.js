@@ -10,10 +10,7 @@ import { Divider, Paper, Typography } from '@material-ui/core';
 import AlternateEmailIcon from '@material-ui/icons/AlternateEmail';
 import PhoneIcon from '@material-ui/icons/Phone';
 
-import {
-    SMALL,
-    MEDIUM,
-} from '../helpers/constants';
+import { SMALL, MEDIUM, IPHONE } from '../helpers/constants';
 
 import {parseTel} from '../helpers/functions';
 
@@ -39,27 +36,37 @@ const useStyles = makeStyles({
 
 export const CustList = ({size, info}) =>
 {
-    const mTop = 2;
     const classes = useStyles();
+    const mTop = 2;
 
+    /*
+    **size adjustment
+    */
     let variant;
     let iconSize;
-
-    if( size === SMALL )
+    if(size === IPHONE)
     {
       variant = 'subtitle2'
       iconSize = 'smallIcon'
     }
-    else if( size === MEDIUM )
+    else if( size === SMALL )
     {
       variant = 'subtitle1'
       iconSize = 'mediumIcon'
     }
-    else
+    else if( size === MEDIUM )
     {
       variant = 'h6'
       iconSize = 'largeIcon'
     }
+    else
+    {
+      variant = 'h5'
+      iconSize = 'largeIcon'
+    }
+    /*
+    **
+    */
 
     return (
         <Paper>
@@ -73,7 +80,9 @@ export const CustList = ({size, info}) =>
                         {info.email}
                       </Typography>
                 </ListItem>
+
                 <Divider/>
+                
                 <ListItem>
                       <IconButton className={classes[iconSize], classes.padding, classes.kick}>
                         <PhoneIcon className={classes[iconSize]}/>

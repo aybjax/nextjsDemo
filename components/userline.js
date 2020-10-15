@@ -3,19 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import CloseIcon from '@material-ui/icons/Close';
 import CreateIcon from '@material-ui/icons/Create';
-import {
-  Box,
-  Grid,
-  Paper,
-  Typography,
-  IconButton,
-} from '@material-ui/core';
+import { Box, Grid, Paper, Typography, IconButton } from '@material-ui/core';
 
-import {
-  SMALL,
-  MEDIUM,
-  LARGE,
-} from '../helpers/constants';
+import { SMALL, MEDIUM, IPHONE } from '../helpers/constants';
 
 
 const useStyles = makeStyles({
@@ -43,72 +33,81 @@ const useStyles = makeStyles({
 export const UserLine = ({size, isRead, setIsRead, info}) => {
   const classes = useStyles();
 
-  const medium = size === MEDIUM || size === LARGE;
+  const medium = size !== IPHONE;
 
+  /*
+  ** size adjustment by screen
+  */
   let variant;
   let margLeft;
-
-  if( size === SMALL )
+  let closeVar
+  if(size === IPHONE)
   {
     margLeft=0
     variant = 'subtitle2'
+    closeVar = 'caption'
   }
-  else if( size === MEDIUM )
+  else if( size === SMALL )
   {
     margLeft=1
     variant = 'body1'
+    closeVar = 'caption'
   }
-  else
+  else if( size === MEDIUM )
   {
     margLeft=2
     variant = 'h5'
+    closeVar = 'overline'
   }
-
-  let closeVar
-  if( size === LARGE ) closeVar = 'button'
-  else closeVar = 'caption'
-
+  else
+  {
+    margLeft=3
+    variant = 'h4'
+    closeVar = 'button'
+  }
+  /*
+  **
+  */
 
   return (
     <Box mb={4}>
       <Paper className={classes.root} style={{backgroundColor: '#1A78C2'}}>
         <Grid container direction="row" alignItems="center">
           
+          {/* Avatar */}
           <Box ml={margLeft}>
             <IconButton className={classes.largeIcon, classes.padding}>
               <AccountCircle className={classes.largeIcon} color='action'/>
             </IconButton>
           </Box>
       
-      
+          {/* Full name */}
           <Box ml={margLeft} className={classes.kick} component="div" overflow="hidden">
             <Typography variant={variant} className={classes.title, classes.padding}>
               {info.name}
             </Typography>
           </Box>
       
-      
+          {/* button */}
           <Box>
-          {isRead ?
-            <>
-              <IconButton className={classes.padding} onClick={ ()=> setIsRead(mode=>!mode) }>
-                {medium && <Box mr={2}>
-                  <Typography variant={closeVar} noWrap display='block' align='center'>
-                      Редактировать
-                  </Typography>
-                </Box>}
-                <CreateIcon color='secondary' fontSize='small'/>
-              </IconButton>
-            </> :
             <IconButton className={classes.padding} onClick={ ()=> setIsRead(mode=>!mode) }>
-              {medium && <Box mr={2}>
-                <Typography variant={closeVar} noWrap display='block' align='center'>
-                    закрыть
-                </Typography>
-              </Box>}
-              <CloseIcon color='secondary' fontSize='small'/>
+              {/* if any size other than smallest */}
+              {medium &&
+                <Box mr={2}>
+                  <Typography variant={closeVar} noWrap display='block' align='center'>
+                      {isRead ? 'Редактировать' : "закрыть"}
+                  </Typography>
+                </Box>
+              }
+
+              {
+                isRead ? 
+                <CreateIcon color='secondary' fontSize='small'/>
+                :
+                <CloseIcon color='secondary' fontSize='small'/>
+              }
+              
             </IconButton>
-          }
           </Box>
         </Grid>
     </Paper>

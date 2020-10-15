@@ -1,14 +1,4 @@
-// import Head from 'next/head'
-// import styles from '../styles/Home.module.css'
-// import RectangleSVG from '../assets/Rectangle.svg'
-import {
-  CircularProgress,
-  Collapse,
-  Container,
-  Grow,
-  ThemeProvider,
-  useMediaQuery,
-} from '@material-ui/core';
+import { Container, ThemeProvider, useMediaQuery } from '@material-ui/core';
 import { Appbar } from '../components/appbar';
 import { Breadcrumb } from '../components/bread';
 import { Header } from '../components/title.js';
@@ -21,18 +11,9 @@ import { CustList } from '../components/list'
 import ReactLoading from 'react-loading';
 
 
-import {
-  SMALL,
-  MEDIUM,
-  LARGE,
-  CONFIRM,
-  ALERT,
-  NONE,
-  NO,
-  YES,
-  PENDING,
-} from '../helpers/constants';
+import { SMALL, MEDIUM, LARGE, NONE, NO, YES, IPHONE } from '../helpers/constants';
 import { useState } from 'react';
+
 
 export default function Home() {
 
@@ -40,10 +21,13 @@ export default function Home() {
 
   const medium = useMediaQuery('(min-width:860px)');
 
+  const iphone = useMediaQuery('(max-width:500px)');
+
   let size;
 
   if(large) size = LARGE
   else if(medium) size = MEDIUM
+  else if(iphone) size = IPHONE
   else size = SMALL
 
   //state
@@ -58,7 +42,7 @@ export default function Home() {
 
   /***********************************/
   const [alertModal, setAlertModal] = useState({
-    state: CONFIRM,
+    state: NONE,
     resp: NO,
     payload:{}
   })
@@ -79,22 +63,21 @@ export default function Home() {
   return (
     <ThemeProvider theme={theme}>
     <Container className='container'>
-      <Appbar {...args}/>
+      <Appbar size={size} info={info}/>
       <Header/>
-      <Breadcrumb {...args}/>
+      <Breadcrumb size={size} />
       <UserLine {...args}/>
-      
+
       {
         isRead ?
-        <CustList {...args}/> :
-        <Form {...args}/>
+        <CustList size={size} info={info}/> :
+        <Form size={size} alertModal={alertModal}/>
       }
 
       {
         alertModal.state !== NONE &&
           <Confirm {...args}/>
       }
-      
       {
         alertModal.resp === YES &&
         <ReactLoading id='loading' type={'bubbles'} color={'#482880'} height={667} width={375} />

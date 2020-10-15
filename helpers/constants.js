@@ -1,6 +1,7 @@
 /*
 ** custom screen size values
 */
+export const IPHONE = Symbol('smallest')
 export const SMALL = Symbol('small');
 export const MEDIUM = Symbol('medium');
 export const LARGE = Symbol('large');
