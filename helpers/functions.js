@@ -48,14 +48,6 @@ export const parseTel = (tel) => {
 *Axios related fnxs
 */
 
-const axiosInstance = axios.create({
-    baseURL: 'http://jsonplaceholder.typicode.com/posts',
-    headers :{
-        'Content-Type': 'application/json',
-        'x-token-access': 'random'
-    }
-})
-
 export const axiosPost = (setInfo, setAlertModal) => {
     let payload
     //for loading animation
@@ -69,7 +61,7 @@ export const axiosPost = (setInfo, setAlertModal) => {
     } )
 
     //actual request
-    axiosInstance.post('/', payload)
+    axios.post('/api/v1/user-info', payload)
     .then(resp => resp.data)
     .then(resp => {
         //remove modal + set data
