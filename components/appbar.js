@@ -3,47 +3,18 @@ import { makeStyles } from '@material-ui/core/styles';
 import { AppBar, Toolbar, Typography, IconButton, Divider } from '@material-ui/core';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
-import { SMALL, MEDIUM, IPHONE } from '../helpers/constants';
-import {nameInitials} from '../helpers/functions'
 
+import { nameInitials, mediaProps } from '../helpers/functions'
 
-const useStyles = makeStyles((theme) => ({
-  grow: {
-    flexGrow: 1,
-  },
-  sectionDesktop: {
-    display: 'none',
-    [theme.breakpoints.up('md')]: {
-      display: 'flex',
-      justify: 'center',
-
-    },
-  },
-}));
-
-export const Appbar = ({size, info}) => {
+export const Appbar = ({name, size}) => {
   const classes = useStyles();
     
     /*
     ** size adjustment
     */
-    let fontSize;
-    let variant;
-    if( size === SMALL || size === IPHONE )
-    {
-      fontSize = 'small'
-      variant = 'body2'
-    }
-    else if( size === MEDIUM )
-    {
-      fontSize = 'inherit'
-      variant = 'body1'
-    }
-    else
-    {
-      fontSize = 'large'
-      variant = 'subtitle1'
-    }
+
+    const {fontSize, variant} = mediaProps(size, large, medium, others, others,)
+
     /*
     **
     */
@@ -61,10 +32,40 @@ export const Appbar = ({size, info}) => {
             <AccountCircle fontSize={fontSize} color='action'/>
           </IconButton>
           <Typography variant={variant} noWrap display='block' align='center' color='secondary'>
-            {nameInitials(info.name)}
+            {nameInitials(name)}
           </Typography>
         </Toolbar>
       </AppBar>
     </div>
   );
+}
+
+const useStyles = makeStyles((theme) => ({
+  grow: {
+    flexGrow: 1,
+  },
+  sectionDesktop: {
+    display: 'none',
+    [theme.breakpoints.up('md')]: {
+      display: 'flex',
+      justify: 'center',
+
+    },
+  },
+}));
+
+
+const large = {
+  fontSize: 'large',
+  variant: 'subtitle1'
+}
+
+const medium = {
+  fontSize: 'inherit',
+  variant: 'body1'
+}
+
+const others = {
+  fontSize: 'small',
+  variant: 'body2'
 }

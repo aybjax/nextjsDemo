@@ -1,86 +1,49 @@
-import { Container, ThemeProvider, useMediaQuery, Zoom } from '@material-ui/core';
-import { Appbar } from '../components/appbar';
-import { Breadcrumb } from '../components/bread';
-import { Header } from '../components/title.js';
-import { UserLine } from '../components/userline';
-import { Form } from '../components/form';
-import {theme} from '../theme/theme';
-import {Confirm} from '../components/confirm'
-import { CustList } from '../components/list'
-
+import { Container, ThemeProvider, useMediaQuery } from '@material-ui/core';
 import ReactLoading from 'react-loading';
+import { useReducer } from 'react';
+import {theme} from '../theme/theme';
 
 
-import { SMALL, MEDIUM, LARGE, NONE, NO, YES, IPHONE } from '../helpers/constants';
-import { useState } from 'react';
-
+import {Appbar, Breadcrumb, Header, UserLine, Form, Confirm, CustList} from '../components'
+import { SMALL, MEDIUM, LARGE, NONE, YES, IPHONE } from '../helpers/constants';
+import {initialState, stateReducer} from '../states/reducer'
 
 export default function Home() {
 
   const large = useMediaQuery('(min-width:950px)');
-
   const medium = useMediaQuery('(min-width:860px)');
-
   const iphone = useMediaQuery('(max-width:500px)');
 
-  let size;
-
+  let size
   if(large) size = LARGE
   else if(medium) size = MEDIUM
   else if(iphone) size = IPHONE
   else size = SMALL
 
-  //state
-  const [isRead, setIsRead] = useState(true)
-
-  /***********************************/
-  const [info, setInfo] = useState({
-    name: 'Иванова Анна Михайловна',
-    email: 'ivanova@mail.ru',
-    tele: 'Укажите номер телефона'
-  })
-
-  /***********************************/
-  const [alertModal, setAlertModal] = useState({
-    state: NONE,
-    resp: NO,
-    payload:{}
-  })
-
-
-  /******************************************/
-  const args = {}
-
-  args.size = size
-  args.isRead = isRead
-  args.setIsRead = setIsRead
-  args.info = info
-  args.setInfo = setInfo
-  args.alertModal = alertModal
-  args.setAlertModal = setAlertModal
-
-
+  const [appState, stateDispatch] = useReducer(
+                                      stateReducer, {...initialState}
+                                    )
   return (
     <ThemeProvider theme={theme}>
     <Container className='container'>
-      <Appbar size={size} info={info}/>
+      <Appbar size={size} name={appState.name}/>
       <Header/>
       <Breadcrumb size={size} />
-      <UserLine {...args}/>
+      <UserLine size={size} state={appState} dispatch={stateDispatch} />
 
       {
-        isRead ?
-        <CustList size={size} info={info}/> :
-        <Form size={size} setAlertModal={setAlertModal}/>
+        appState.isRead ?
+        <CustList size={size} state={appState}/> :
+        <Form size={size} dispatch={stateDispatch}/>
       }
 
       {
-        alertModal.state !== NONE &&
-          <Confirm {...args}/>
+        appState.modalState !== NONE &&
+          <Confirm size={size} state={appState} dispatch={stateDispatch}/>
       }
       
       {
-        alertModal.resp === YES &&
+        appState.resp === YES &&
         <ReactLoading id='loading' type={'bubbles'} color={'#482880'} height={667} width={375} />
       }
     </Container>

@@ -1,10 +1,24 @@
 import axios from "axios"
-import { ALERT, NO, NONE, YES } from "./constants"
+import { IPHONE, LARGE, MEDIUM, SMALL } from "./constants"
+import * as actionTypes from '../states/actions'
+
+/*
+** media queries properties
+*/
+
+export const mediaProps = (size, large, media, small, iphone) =>
+{
+    if(size === LARGE) return large
+    if(size === MEDIUM) return media
+    if(size === SMALL) return small
+    if(size === IPHONE) return iphone
+}
 
 /*
 ** format name to appbar
 */
-export const nameInitials = (name) => {
+export const nameInitials = (name) =>
+{
     const nameArr = name.split(/\s/)
     if(nameArr.length === 0) return 'Незнаком Я.'
     else if(nameArr.length === 1) return `${name}`
@@ -16,7 +30,8 @@ export const nameInitials = (name) => {
 /*
 ** format telefon number
 */
-export const parseTel = (tel) => {
+export const parseTel = (tel) =>
+{
     if( !(/^\+\d{11}$/.test(tel)) ) return tel
     const arr = []
     let index=0
@@ -48,28 +63,21 @@ export const parseTel = (tel) => {
 *Axios related fnxs
 */
 
-export const axiosPost = (setInfo, setAlertModal) => {
-    let payload
+export const axiosPost = (state, dispatch) =>
+{
     //for loading animation
-    setAlertModal( prev => {
-        payload = {...prev.payload}
-        return {
-            payload: {...prev.payload},
-            state: NONE,
-            resp: YES,
-        }
-    } )
+    dispatch({
+        type: actionTypes.START_LOADING_ANIMATION
+    })
 
     //actual request
-    axios.post('/api/v1/user-info', payload)
+    axios.post('/api/v1/user-info', state.payload)
     .then(resp => resp.data)
     .then(resp => {
         //remove modal + set data
-        setInfo({...resp})
-        setAlertModal({
-            state: ALERT,
-            resp:NO,
-            payload:{}
+        dispatch({
+            type: actionTypes.SAVE_RESPONSE_DATA,
+            payload: {...resp}
         })
         localStorage.setItem('userInfo', JSON.stringify(resp))
     })

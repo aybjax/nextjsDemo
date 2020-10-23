@@ -6,16 +6,11 @@ import PermContactCalendarIcon from '@material-ui/icons/PermContactCalendar';
 import AlternateEmailIcon from '@material-ui/icons/AlternateEmail';
 import PhoneIcon from '@material-ui/icons/Phone';
 
-import { MEDIUM, LARGE, CONFIRM, PENDING, IPHONE } from '../helpers/constants'
 import { useForm } from 'react-hook-form';
+import * as actionTypes from '../states/actions'
+import {mediaProps} from '../helpers/functions'
 
-const useStyles = makeStyles({
-    largeIcon: {
-      transform: 'scale(1.5)',
-    },
-  });
-
-export const Form = ({size, setAlertModal}) => {
+export const Form = ({size, dispatch}) => {
     const classes = useStyles();
     
     const {register, handleSubmit, errors} = useForm()
@@ -23,38 +18,32 @@ export const Form = ({size, setAlertModal}) => {
     /*
     **size adjustment
     */
-    let medium=false;
-    let large=false;
-    let inputMargin = 'normal'
-    if(size === LARGE)
-    {
-      large=true;
-      medium=true
-    }
-    else if(size === MEDIUM)
-    {
-      medium=true;
-    }else if(size === IPHONE)
-    {
-      inputMargin = 'dense'
-    }
+
+    const {
+          medium,
+          large,
+          inputMargin,
+        } = {
+              medium: false,
+              large: false,
+              inputMargin: 'normal',
+              ...mediaProps(size, largeProp, mediumProp, {}, iphoneProp)
+            }
+
     const direction = medium ? 'row' : 'column';
     const mTop = medium ? 0 : 2;
     const outerStyling = !medium ? {paddingRight: 20, paddingLeft: 20 } : {}
+    
     /*
     **
     */
   
     const save = (data) => {
-      setAlertModal({
-        state: CONFIRM,
-        resp: PENDING,
-        payload: {
-          ...data,
-        }
+      dispatch({
+        type: actionTypes.INITIATE_SAVING,
+        payload: {...data},
       })
     }
-
     return (
       <form onSubmit={handleSubmit(save)}>
       <Card>
@@ -141,3 +130,24 @@ export const Form = ({size, setAlertModal}) => {
       </form>
     );
   }
+
+const useStyles = makeStyles({
+  largeIcon: {
+    transform: 'scale(1.5)',
+  },
+});
+
+const largeProp = {
+  large: true,
+  medium: true,
+}
+
+const mediumProp = {
+  medium: true,
+  direction: 'row',
+}
+
+const iphoneProp = {
+  inputMargin: 'dense'
+}
+

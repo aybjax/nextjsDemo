@@ -10,60 +10,20 @@ import { Divider, Paper, Typography } from '@material-ui/core';
 import AlternateEmailIcon from '@material-ui/icons/AlternateEmail';
 import PhoneIcon from '@material-ui/icons/Phone';
 
-import { SMALL, MEDIUM, IPHONE } from '../helpers/constants';
+import {parseTel, mediaProps} from '../helpers/functions';
 
-import {parseTel} from '../helpers/functions';
-
-const useStyles = makeStyles({
-    largeIcon: {
-      transform: 'scale(1.5)',
-    },
-    mediumIcon: {
-      transform: 'scale(1.2)',
-    },
-    smallIcon: {
-      transform: 'scale(1)',
-    },
-    padding: {
-      padding: 5,
-    },
-
-    kick: {
-      marginRight: 10,
-    }
-  });
-
-
-export const CustList = ({size, info}) =>
+export const CustList = ({state, size}) =>
 {
     const classes = useStyles();
-    const mTop = 2;
 
     /*
     **size adjustment
     */
-    let variant;
-    let iconSize;
-    if(size === IPHONE)
-    {
-      variant = 'subtitle2'
-      iconSize = 'smallIcon'
-    }
-    else if( size === SMALL )
-    {
-      variant = 'subtitle1'
-      iconSize = 'mediumIcon'
-    }
-    else if( size === MEDIUM )
-    {
-      variant = 'h6'
-      iconSize = 'largeIcon'
-    }
-    else
-    {
-      variant = 'h5'
-      iconSize = 'largeIcon'
-    }
+   
+    const {
+            variant,
+            iconSize
+          } = mediaProps(size, large, medium, small, iphone)
     /*
     **
     */
@@ -77,7 +37,7 @@ export const CustList = ({size, info}) =>
                       </IconButton>
 
                       <Typography variant={variant} style={{color: 'black'}}>
-                        {info.email}
+                        {state.email}
                       </Typography>
                 </ListItem>
 
@@ -89,11 +49,51 @@ export const CustList = ({size, info}) =>
                       </IconButton>
 
                       <Typography variant={variant} style={{color: 'black'}}>
-                        {parseTel(info.tele)}
+                        {parseTel(state.tele)}
                       </Typography>
                 </ListItem>
             </List>
         </Paper>
         
     );
+}
+
+
+const useStyles = makeStyles({
+  largeIcon: {
+    transform: 'scale(1.5)',
+  },
+  mediumIcon: {
+    transform: 'scale(1.2)',
+  },
+  smallIcon: {
+    transform: 'scale(1)',
+  },
+  padding: {
+    padding: 5,
+  },
+
+  kick: {
+    marginRight: 10,
+  }
+});
+
+const large = {
+variant: 'h5',
+iconSize: 'largeIcon',
+}
+
+const medium = {
+variant: 'h6',
+iconSize: 'largeIcon',
+}
+
+const small = {
+variant: 'subtitle1',
+iconSize: 'mediumIcon',
+}
+
+const iphone = {
+variant: 'subtitle2',
+iconSize: 'smallIcon',
 }

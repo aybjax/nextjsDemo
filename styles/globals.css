@@ -18,7 +18,11 @@ a {
 }
 
 .container {
-  min-width: 335px;
+  min-width: 310px;
+}
+
+.modal {
+  min-width: 242px;
 }
 
 #loading {
